@@ -1,0 +1,7 @@
+{
+  "name": "pocket-front",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
