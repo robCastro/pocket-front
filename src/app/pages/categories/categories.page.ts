@@ -21,6 +21,6 @@ export class CategoriesPage implements OnInit {
     const modal = this.modalController.create({
       component: CategoryModalComponent,
     });
-    return (await modal).present()
+    (await modal).present();
   }
 }
