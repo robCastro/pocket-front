@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { CreateCategoryRequest } from 'src/app/interfaces/categories';
+import { Observable } from 'rxjs';
+import { Category, CreateCategoryRequest, EditCategoryRequest } from 'src/app/interfaces/categories';
 import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
@@ -13,18 +14,25 @@ export class CategoryModalComponent implements OnInit {
 
   categoryForm!: FormGroup;
 
+  @Input()
+  category?: Category;
+
+  titulo = '';
+
   constructor(
     private modalController: ModalController,
     private fb: FormBuilder,
     private categoryService: CategoryService,
-  ) {
-    this.categoryForm = this.fb.group({
-      name: ['', Validators.required],
-      limit: ['', [Validators.required, Validators.min(0.01)]],
-    })
-  }
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.titulo = (this.category) ? 'Editar Categoría' : 'Nueva Categoría';
+    this.categoryForm = this.fb.group({
+      id: [this.category?.id || ''],
+      name: [this.category?.name || '', Validators.required],
+      limit: [this.category?.limit || '', [Validators.required, Validators.min(0.01)]],
+    });
+  }
 
   public get name(): AbstractControl {
     return this.categoryForm.get('name');
@@ -38,18 +46,29 @@ export class CategoryModalComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  guardar() {
+  onSubmit() {
     if (this.categoryForm.status != 'VALID') {
       this.categoryForm.markAllAsTouched();
       return;
     }
+    const response$ = (this.category) ? this.editCategory() : this.createCategory();
+    response$.subscribe(() => this.modalController.dismiss());
+  }
+
+  private createCategory(): Observable<CreateCategoryRequest> {
     const request: CreateCategoryRequest = {
       name: this.name.value,
       limit: this.limit.value,
     }
-    this.categoryService.createCategory(request).subscribe(() => {
-      this.modalController.dismiss();
-    });
+    return this.categoryService.createCategory(request);
+  }
+
+  private editCategory(): Observable<EditCategoryRequest> {
+    const request: EditCategoryRequest = {
+      name: this.name.value,
+      limit: this.limit.value,
+    }
+    return this.categoryService.editCategory(this.category.id, request);
   }
 
 }

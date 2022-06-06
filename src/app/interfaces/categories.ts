@@ -15,3 +15,8 @@ export interface CreateCategoryRequest {
     name: string;
     limit: number;
 }
+
+export interface EditCategoryRequest {
+    name: string;
+    limit: number;
+}
