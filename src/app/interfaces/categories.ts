@@ -1,7 +1,6 @@
-export interface ListCategoriesResponse {
-    count: number;
-    next: number | null;
-    previous: number | null;
+import { Pagination } from "./pagination";
+
+export interface ListCategoriesResponse extends Pagination {
     results: Category[];
 }
 
