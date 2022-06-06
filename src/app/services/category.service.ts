@@ -35,12 +35,26 @@ export class CategoryService {
     return this.httpClient.put<Category>(url, request).pipe(
       tap(response => console.log('Response de editar category', response)),
       tap(newCategory => {
-        const index = this.categories.findIndex(category =>  category.id == newCategory.id);
+        const index = this.categories.findIndex(category => category.id == newCategory.id);
         if (index == -1) {
           return;
         }
         this.categories.splice(index, 1, newCategory);
       }),
     );
+  }
+
+  public deleteCategory(id: number): Observable<any> {
+    const url = this.endpoint + id + '/';
+    return this.httpClient.delete(url).pipe(
+      tap(response => console.log('Response de eliminar category', response)),
+      tap(() => {
+        const index = this.categories.findIndex(category => category.id == id);
+        if (index == -1) {
+          return;
+        }
+        this.categories.splice(index, 1);
+      })
+    )
   }
 }

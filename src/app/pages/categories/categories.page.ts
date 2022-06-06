@@ -25,4 +25,8 @@ export class CategoriesPage implements OnInit {
     });
     (await modal).present();
   }
+
+  deleteCategory(category: Category) {
+    this.categoryService.deleteCategory(category.id).subscribe();
+  }
 }
