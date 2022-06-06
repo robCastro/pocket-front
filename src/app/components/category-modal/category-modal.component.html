@@ -16,6 +16,26 @@
     </ion-toolbar>
   </ion-header>
 
+  <form [formGroup]="categoryForm" (ngSubmit)="guardar()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input [required]="true" formControlName="name"></ion-input>
+        <div *ngIf="name.invalid && (name.dirty || name.touched)">
+          <ion-note color="danger" *ngIf="name.errors?.['required']" slot="error">El nombre es requerido</ion-note>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Límite</ion-label>
+        <ion-input [required]="true" inputmode="decimal" formControlName="limit"></ion-input>
+        <div *ngIf="limit.invalid && (limit.dirty || limit.touched)">
+          <ion-note color="danger" *ngIf="limit.errors?.['required']" slot="error">El límite es requerido</ion-note>
+          <ion-note color="danger" *ngIf="limit.errors?.['min']" slot="error">El límite es demasiado bajo</ion-note>
+        </div>
+      </ion-item>
+    </ion-list>
 
+    <ion-button type="submit" expand="block">Guardar</ion-button>
+  </form>
 
 </ion-content>
