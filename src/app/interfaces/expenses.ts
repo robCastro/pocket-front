@@ -1,3 +1,4 @@
+import { Category } from "./categories";
 import { Pagination } from "./pagination";
 
 export interface ListExpensesResponse extends Pagination {
@@ -10,5 +11,5 @@ export interface Expense {
     comment: string;
     amount: number;
     date: string;
-    category: number;
+    category: Category;
 }

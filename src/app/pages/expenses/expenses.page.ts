@@ -11,23 +11,14 @@ import { ExpenseService } from 'src/app/services/expense.service';
 })
 export class ExpensesPage implements OnInit {
 
-  private currentPage$ = new BehaviorSubject<number>(1);
-
-  public currentPageData$: Observable<Expense[]> = this.currentPage$.pipe(
-    switchMap(currentPage => this.expenseService.getExpenses(currentPage)),
-    map(response => response.results)
-  )
+  expenses$: Observable<Expense[]>;
 
   constructor(
     public expenseService: ExpenseService,
   ) { }
 
   ngOnInit() {
-  }
-
-  nextPage(event: any) {
-    this.currentPage$.next(this.currentPage$.value + 1);
-    event.target.complete();
+    this.expenses$ = this.expenseService.getExpenses(1);
   }
 
 }
