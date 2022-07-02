@@ -15,15 +15,20 @@
   </ion-header>
 
   <ion-list>
-    <ion-item *ngFor="let expense of expenses$ | async">
+    <ion-item *ngFor="let expense of expenses$ | async" (click)="mostrarModal(expense)">
       <ion-label>
-
         {{ expense.category.name }}
-
-        <p>{{ expense.date | date:'d/M/Y H:s' }} {{ expense.comment }}</p>
+        <p>{{ expense.comment }}</p>
+        <p>{{ expense.date | date:'dd/MM/yy HH:mm' }}</p>
       </ion-label>
       <ion-badge>${{ expense.amount }}</ion-badge>
     </ion-item>
   </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="mostrarModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>

@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ titulo }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ titulo }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <form [formGroup]="expenseForm">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Comentario</ion-label>
+        <ion-textarea formControlName="comment"></ion-textarea>
+        <div *ngIf="comment.invalid && (comment.dirty || comment.touched)">
+          <ion-note color="danger" *ngIf="comment.errors?.['required']" slot="error">El nombre es requerido</ion-note>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label>Categoría</ion-label>
+        <ion-select formControlName="category_id" placeholder="Seleccione la categoría">
+          <ion-select-option
+            *ngFor="let category of categoryService.categories"
+            [value]="category.id"
+          >
+            {{ category.name }}
+          </ion-select-option>
+        </ion-select>
+        <div *ngIf="category_id.invalid && (category_id.dirty || category_id.touched)">
+          <ion-note color="danger" *ngIf="category_id.errors?.['required']" slot="error">La categoría es requerida</ion-note>
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Costo</ion-label>
+        <ion-input [required]="true" inputmode="decimal" formControlName="amount"></ion-input>
+        <div *ngIf="amount.invalid && (amount.dirty || amount.touched)">
+          <ion-note color="danger" *ngIf="amount.errors?.['required']" slot="error">El costo es requerido</ion-note>
+          <ion-note color="danger" *ngIf="amount.errors?.['min']" slot="error">El costo es demasiado bajo</ion-note>
+        </div>
+      </ion-item>
+      <ion-datetime formControlName="date"></ion-datetime>
+      <ion-item>
+        <div *ngIf="date.invalid && (date.dirty || date.touched)">
+          <ion-note color="danger" *ngIf="date.errors?.['required']" slot="error">La fecha es requerida</ion-note>
+        </div>
+      </ion-item>
+    </ion-list>
+
+    <ion-button (click)="onSubmit()" type="submit" expand="block">Guardar</ion-button>
+  </form>
+
+</ion-content>
