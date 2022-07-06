@@ -19,3 +19,7 @@ export interface EditCategoryRequest {
     name: string;
     limit: number;
 }
+
+export interface CategoryWithExpended extends Category {
+    expended: number;
+}

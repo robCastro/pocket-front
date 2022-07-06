@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Category, CreateCategoryRequest, EditCategoryRequest, ListCategoriesResponse } from '../interfaces/categories';
+import { Category, CategoryWithExpended, CreateCategoryRequest, EditCategoryRequest, ListCategoriesResponse } from '../interfaces/categories';
 
 import { tap } from "rxjs/operators";
 
@@ -56,5 +56,12 @@ export class CategoryService {
         this.categories.splice(index, 1);
       })
     )
+  }
+
+  public getOverview(): Observable<CategoryWithExpended[]> {
+    const url = this.endpoint + 'overview/'
+    return this.httpClient.get<CategoryWithExpended[]>(url).pipe(
+      tap(response => console.log('Response recibido de overview', response)),
+    );
   }
 }
